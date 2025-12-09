@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Cơ Sở Tri Thức - Tra Cứu Mức Phạt Luật Giao Thông</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            font-size: 15px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        select:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            display: none;
+        }
+
+        #result.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #667eea;
+            display: inline-block;
+            min-width: 150px;
+        }
+
+        .result-value {
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .error {
+            background-color: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #c33;
+            margin-top: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚦 Hệ Cơ Sở Tri Thức Tra Cứu Luật Giao Thông</h1>
+        <div class="subtitle">Forward Chaining - Structured Look-up 3 Cấp Độ</div>
+
+        <!-- DROPDOWN 1: Lỗi vi phạm (Cấp 1) -->
+        <div class="form-group">
+            <label for="loiViPham">
+                Bước 1: Chọn Lỗi Vi Phạm <span class="badge">Cấp 1</span>
+            </label>
+            <select id="loiViPham">
+                <option value="">-- Vui lòng chọn loại lỗi vi phạm --</option>
+                {% for loi in loi_vi_pham_list %}
+                <option value="{{ loi }}">{{ loi }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- DROPDOWN 2: Phương tiện (Cấp 2) -->
+        <div class="form-group">
+            <label for="phuongTien">
+                Bước 2: Chọn Phương Tiện <span class="badge">Cấp 2</span>
+            </label>
+            <select id="phuongTien" disabled>
+                <option value="">-- Chọn lỗi vi phạm trước --</option>
+            </select>
+        </div>
+
+        <!-- DROPDOWN 3: Chi tiết lỗi (Cấp 3) -->
+        <div class="form-group">
+            <label for="chiTietLoi">
+                Bước 3: Chọn Chi Tiết Lỗi <span class="badge">Cấp 3</span>
+            </label>
+            <select id="chiTietLoi" disabled>
+                <option value="">-- Chọn phương tiện trước --</option>
+            </select>
+        </div>
+
+        <!-- KHU VỰC HIỂN THỊ KẾT QUẢ -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Cache các element DOM
+        const loiViPhamSelect = document.getElementById('loiViPham');
+        const phuongTienSelect = document.getElementById('phuongTien');
+        const chiTietLoiSelect = document.getElementById('chiTietLoi');
+        const resultDiv = document.getElementById('result');
+
+        /**
+         * Hàm gọi AJAX đến endpoint /filter_data
+         * @param {Object} data - Dữ liệu gửi đi (loiViPham, phuongTien, chiTietLoi)
+         * @returns {Promise} - Promise chứa kết quả JSON
+         */
+        async function filterData(data) {
+            try {
+                const response = await fetch('/filter_data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return { success: false, message: 'Lỗi kết nối đến server' };
+            }
+        }
+
+        /**
+         * Hàm cập nhật dropdown với dữ liệu mới
+         * @param {HTMLSelectElement} selectElement - Element dropdown cần cập nhật
+         * @param {Array} dataList - Danh sách dữ liệu mới
+         * @param {String} placeholder - Text hiển thị mặc định
+         */
+        function updateDropdown(selectElement, dataList, placeholder) {
+            selectElement.innerHTML = `<option value="">${placeholder}</option>`;
+            dataList.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                selectElement.appendChild(option);
+            });
+            selectElement.disabled = false;
+        }
+
+        /**
+         * Hàm reset dropdown về trạng thái ban đầu
+         * @param {HTMLSelectElement} selectElement - Element dropdown cần reset
+         * @param {String} placeholder - Text hiển thị mặc định
+         */
+        function resetDropdown(selectElement, placeholder) {
+            selectElement.innerHTML = `<option value="">${placeholder}</option>`;
+            selectElement.disabled = true;
+        }
+
+        /**
+         * Hàm hiển thị kết quả xử phạt
+         * @param {Object} data - Dữ liệu kết quả từ server
+         */
+        function displayResult(data) {
+            resultDiv.innerHTML = `
+                <div class="result-title">📋 Kết Quả Tra Cứu</div>
+                <div class="result-item">
+                    <span class="result-label">Mã luật:</span>
+                    <span class="result-value">${data.id}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Lỗi vi phạm:</span>
+                    <span class="result-value">${data.loiViPham}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Phương tiện:</span>
+                    <span class="result-value">${data.phuongTien}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Chi tiết lỗi:</span>
+                    <span class="result-value">${data.chiTietLoi}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">💰 Mức phạt:</span>
+                    <span class="result-value"><strong>${data.mucPhat}</strong></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">⚠️ Phạt bổ sung:</span>
+                    <span class="result-value">${data.phatBoSung}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">📖 Căn cứ pháp lý:</span>
+                    <span class="result-value">${data.canCuPhapLy}</span>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+
+        /**
+         * Hàm hiển thị thông báo lỗi
+         * @param {String} message - Nội dung thông báo lỗi
+         */
+        function displayError(message) {
+            resultDiv.innerHTML = `<div class="error">❌ ${message}</div>`;
+            resultDiv.classList.add('show');
+        }
+
+        // ========== EVENT LISTENERS ==========
+
+        /**
+         * Sự kiện: Khi DD1 (loiViPham) thay đổi
+         * Logic: Gọi /filter_data để lấy danh sách phuongTien (Cấp 2)
+         */
+        loiViPhamSelect.addEventListener('change', async function() {
+            const loiViPham = this.value;
+
+            // Reset DD2 và DD3
+            resetDropdown(phuongTienSelect, '-- Chọn lỗi vi phạm trước --');
+            resetDropdown(chiTietLoiSelect, '-- Chọn phương tiện trước --');
+            resultDiv.classList.remove('show');
+
+            if (loiViPham) {
+                // Gọi API Cấp 1
+                const result = await filterData({ loiViPham: loiViPham });
+
+                if (result.success && result.level === 1) {
+                    updateDropdown(phuongTienSelect, result.data, '-- Vui lòng chọn phương tiện --');
+                } else {
+                    displayError(result.message || 'Không thể tải danh sách phương tiện');
+                }
+            }
+        });
+
+        /**
+         * Sự kiện: Khi DD2 (phuongTien) thay đổi
+         * Logic: Gọi /filter_data để lấy danh sách chiTietLoi (Cấp 3)
+         */
+        phuongTienSelect.addEventListener('change', async function() {
+            const loiViPham = loiViPhamSelect.value;
+            const phuongTien = this.value;
+
+            // Reset DD3
+            resetDropdown(chiTietLoiSelect, '-- Chọn phương tiện trước --');
+            resultDiv.classList.remove('show');
+
+            if (phuongTien) {
+                // Gọi API Cấp 2
+                const result = await filterData({ 
+                    loiViPham: loiViPham, 
+                    phuongTien: phuongTien 
+                });
+
+                if (result.success && result.level === 2) {
+                    updateDropdown(chiTietLoiSelect, result.data, '-- Vui lòng chọn chi tiết lỗi --');
+                } else {
+                    displayError(result.message || 'Không thể tải danh sách chi tiết lỗi');
+                }
+            }
+        });
+
+        /**
+         * Sự kiện: Khi DD3 (chiTietLoi) được chọn
+         * Logic: Gọi /filter_data lần cuối để lấy thông tin xử phạt (Cấp 3)
+         */
+        chiTietLoiSelect.addEventListener('change', async function() {
+            const loiViPham = loiViPhamSelect.value;
+            const phuongTien = phuongTienSelect.value;
+            const chiTietLoi = this.value;
+
+            resultDiv.classList.remove('show');
+
+            if (chiTietLoi) {
+                // Hiển thị loading
+                resultDiv.innerHTML = '<div class="loading">⏳ Đang tra cứu thông tin xử phạt...</div>';
+                resultDiv.classList.add('show');
+
+                // Gọi API Cấp 3 (Truy vấn cuối)
+                const result = await filterData({ 
+                    loiViPham: loiViPham, 
+                    phuongTien: phuongTien, 
+                    chiTietLoi: chiTietLoi 
+                });
+
+                if (result.success && result.level === 3) {
+                    displayResult(result.data);
+                } else {
+                    displayError(result.message || 'Không tìm thấy thông tin xử phạt');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
