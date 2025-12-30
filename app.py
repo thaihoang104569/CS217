@@ -3,10 +3,12 @@
 Sử dụng Forward Chaining với Structured Look-up 3 cấp độ
 """
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 import json
+import secrets
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(16)
 
 # Tải dữ liệu từ file rule.json vào bộ nhớ
 def load_rules():
@@ -22,8 +24,70 @@ def load_rules():
         print("Lỗi: File rule.json không đúng định dạng JSON")
         return []
 
+def load_concepts():
+    """Tải dữ liệu khái niệm từ file khainiem.json"""
+    try:
+        with open('khainiem.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            return data.get('tuDienKhaiNiem', [])
+    except FileNotFoundError:
+        print("Lỗi: Không tìm thấy file khainiem.json")
+        return []
+    except json.JSONDecodeError:
+        print("Lỗi: File khainiem.json không đúng định dạng JSON")
+        return []
+
+def determine_highest_penalty(penalties):
+    """
+    Xác định hình phạt bổ sung cao nhất
+    Ước lượng dựa vào số điểm GPLX bị trừ và thời gian tước quyền sử dụng
+    """
+    if not penalties:
+        return 'Không có'
+    
+    import re
+    
+    # Thứ tự ưu tiên: Tước quyền > Trừ điểm
+    max_revocation_months = 0
+    max_deducted_points = 0
+    revocation_penalty = None
+    points_penalty = None
+    
+    for penalty in penalties:
+        penalty_lower = penalty.lower()
+        
+        # Kiểm tra tước quyền sử dụng GPLX
+        if 'tước quyền' in penalty_lower:
+            # Tìm số tháng
+            months = re.findall(r'(\d+)\s*[\u2013\-]\s*(\d+)\s*tháng', penalty)
+            if months:
+                max_months = int(months[0][1])  # Lấy giá trị cao nhất
+                if max_months > max_revocation_months:
+                    max_revocation_months = max_months
+                    revocation_penalty = penalty
+        
+        # Kiểm tra trừ điểm GPLX
+        elif 'trừ' in penalty_lower and 'điểm' in penalty_lower:
+            # Tìm số điểm
+            points = re.findall(r'trừ\s*(\d+)\s*điểm', penalty_lower)
+            if points:
+                deducted_points = int(points[0])
+                if deducted_points > max_deducted_points:
+                    max_deducted_points = deducted_points
+                    points_penalty = penalty
+    
+    # Trả về phạt bổ sung cao nhất
+    if revocation_penalty:
+        return revocation_penalty
+    elif points_penalty:
+        return points_penalty
+    else:
+        # Trả về phạt bổ sung đầu tiên nếu không phân loại được
+        return penalties[0]
+
 # Biến toàn cục lưu trữ dữ liệu
 rules_data = load_rules()
+concepts_data = load_concepts()
 
 @app.route('/')
 def index():
@@ -127,7 +191,201 @@ def filter_data():
             'message': f'Lỗi xử lý: {str(e)}'
         })
 
+@app.route('/add_to_list', methods=['POST'])
+def add_to_list():
+    """Thêm vi phạm vào danh sách"""
+    try:
+        violation = request.json
+        
+        # Khởi tạo danh sách nếu chưa có
+        if 'violation_list' not in session:
+            session['violation_list'] = []
+        
+        # Thêm vi phạm vào danh sách
+        session['violation_list'].append(violation)
+        session.modified = True
+        
+        return jsonify({
+            'success': True,
+            'message': 'Đã thêm vi phạm vào danh sách',
+            'total_count': len(session['violation_list'])
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Lỗi: {str(e)}'
+        })
+
+@app.route('/get_violation_list', methods=['GET'])
+def get_violation_list():
+    """Lấy danh sách vi phạm và tính tổng mức phạt"""
+    try:
+        violation_list = session.get('violation_list', [])
+        
+        # Tính tổng mức phạt dạng khoảng
+        import re
+        total_min = 0
+        total_max = 0
+        
+        # Danh sách để xác định phạt bổ sung cao nhất
+        supplementary_penalties = []
+        
+        for violation in violation_list:
+            muc_phat = violation.get('mucPhat', '0')
+            # Trích xuất số tiền từ chuỗi (ví dụ: "2.000.000 – 3.000.000 đồng")
+            numbers = re.findall(r'[\d.]+', muc_phat.replace('.', ''))
+            
+            if numbers:
+                if len(numbers) >= 2:
+                    # Có khoảng: lấy min và max
+                    total_min += int(numbers[0])
+                    total_max += int(numbers[1])
+                else:
+                    # Chỉ có 1 số: cộng vào cả min và max
+                    total_min += int(numbers[0])
+                    total_max += int(numbers[0])
+            
+            # Thu thập phạt bổ sung
+            phat_bo_sung = violation.get('phatBoSung', '')
+            if phat_bo_sung and phat_bo_sung != 'Không có':
+                supplementary_penalties.append(phat_bo_sung)
+        
+        # Xác định phạt bổ sung cao nhất
+        highest_penalty = determine_highest_penalty(supplementary_penalties)
+        
+        return jsonify({
+            'success': True,
+            'violations': violation_list,
+            'total_count': len(violation_list),
+            'total_fine_min': total_min,
+            'total_fine_max': total_max,
+            'highest_supplementary_penalty': highest_penalty
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Lỗi: {str(e)}'
+        })
+
+@app.route('/remove_from_list', methods=['POST'])
+def remove_from_list():
+    """Xóa vi phạm khỏi danh sách theo index"""
+    try:
+        index = request.json.get('index')
+        
+        if 'violation_list' in session and 0 <= index < len(session['violation_list']):
+            removed = session['violation_list'].pop(index)
+            session.modified = True
+            
+            return jsonify({
+                'success': True,
+                'message': 'Đã xóa vi phạm khỏi danh sách',
+                'removed': removed
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': 'Index không hợp lệ'
+            })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Lỗi: {str(e)}'
+        })
+
+@app.route('/clear_list', methods=['POST'])
+def clear_list():
+    """Xóa toàn bộ danh sách vi phạm"""
+    try:
+        session['violation_list'] = []
+        session.modified = True
+        
+        return jsonify({
+            'success': True,
+            'message': 'Đã xóa toàn bộ danh sách'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Lỗi: {str(e)}'
+        })
+
+@app.route('/search_concept', methods=['POST'])
+def search_concept():
+    """Tìm kiếm khái niệm theo từ khóa"""
+    try:
+        keyword = request.json.get('keyword', '').lower().strip()
+        
+        if not keyword:
+            return jsonify({
+                'success': False,
+                'message': 'Vui lòng nhập từ khóa tìm kiếm'
+            })
+        
+        # Tìm kiếm trong dữ liệu khái niệm
+        results = []
+        for concept in concepts_data:
+            # Tìm trong thuật ngữ
+            if keyword in concept['thuatNgu'].lower():
+                results.append(concept)
+                continue
+            
+            # Tìm trong định nghĩa
+            if keyword in concept['dinhNghia'].lower():
+                results.append(concept)
+                continue
+            
+            # Tìm trong từ khóa
+            if 'tuKhoa' in concept:
+                for tk in concept['tuKhoa']:
+                    if keyword in tk.lower():
+                        results.append(concept)
+                        break
+        
+        if results:
+            return jsonify({
+                'success': True,
+                'results': results,
+                'count': len(results)
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': f'Không tìm thấy khái niệm nào với từ khóa "{keyword}"'
+            })
+    
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Lỗi: {str(e)}'
+        })
+
+@app.route('/get_all_concepts', methods=['GET'])
+def get_all_concepts():
+    """Lấy danh sách tất cả khái niệm (cho autocomplete)"""
+    try:
+        # Lấy danh sách thuật ngữ và từ khóa
+        terms = []
+        for concept in concepts_data:
+            terms.append(concept['thuatNgu'])
+            if 'tuKhoa' in concept:
+                terms.extend(concept['tuKhoa'])
+        
+        # Loại bỏ trùng lặp và sắp xếp
+        unique_terms = sorted(list(set(terms)))
+        
+        return jsonify({
+            'success': True,
+            'terms': unique_terms
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Lỗi: {str(e)}'
+        })
+
 if __name__ == '__main__':
     print(f"Đã tải {len(rules_data)} luật từ file rule.json")
+    print(f"Đã tải {len(concepts_data)} khái niệm từ file khainiem.json")
     print("Khởi động server Flask tại http://127.0.0.1:5000")
     app.run(debug=True, host='127.0.0.1', port=5000)

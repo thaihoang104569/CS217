@@ -156,13 +156,422 @@
             margin-left: 10px;
             font-weight: normal;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #violationListSection {
+            margin-top: 40px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .violation-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .violation-item:hover {
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            transform: translateX(5px);
+            transition: all 0.3s ease;
+        }
+
+        .violation-number {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .violation-detail {
+            margin: 8px 0;
+            color: #444;
+        }
+
+        .violation-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-right: 8px;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #eb3349;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .total-amount {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .empty-list {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-style: italic;
+        }
+
+        /* Tab Navigation Styles */
+        .tab-navigation {
+            display: flex;
+            gap: 0;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #ddd;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+            margin-bottom: -3px;
+        }
+
+        .tab-button:hover {
+            background: linear-gradient(135deg, #d0d0d0 0%, #e5e5e5 100%);
+            color: #333;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-button .tab-icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+
+        .tab-button .tab-badge {
+            background: #eb3349;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 11px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Concept Search Styles */
+        .search-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .concept-results {
+            margin-top: 30px;
+        }
+
+        .concept-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .concept-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .concept-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .concept-id {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .concept-definition {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .concept-legal {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border-left: 3px solid #764ba2;
+        }
+
+        .concept-legal strong {
+            color: #764ba2;
+        }
+
+        .concept-keywords {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .keyword-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .search-info {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            font-size: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            border-left: 5px solid #eb3349;
+        }
+
+        .autocomplete-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 120px;
+            background: white;
+            border: 2px solid #667eea;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .autocomplete-suggestions.show {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background: #f0f0f0;
+        }
+
+        .suggestion-item.active {
+            background: #667eea;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🚦 Hệ Cơ Sở Tri Thức Tra Cứu Luật Giao Thông</h1>
-        <div class="subtitle">Forward Chaining - Structured Look-up 3 Cấp Độ</div>
+        <div class="subtitle">Forward Chaining</div>
 
+        <!-- TAB NAVIGATION -->
+        <div class="tab-navigation">
+            <button class="tab-button active" data-tab="search">
+                <span class="tab-icon">🔍</span>
+                <span>Tra Cứu Vi Phạm</span>
+            </button>
+            <button class="tab-button" data-tab="concept">
+                <span class="tab-icon">📖</span>
+                <span>Tra Cứu Khái Niệm</span>
+            </button>
+            <button class="tab-button" data-tab="list" id="listTabButton">
+                <span class="tab-icon">📋</span>
+                <span>Danh Sách Vi Phạm</span>
+                <span class="tab-badge" id="listCountBadge" style="display: none;">0</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: TRA CỨU VI PHẠM -->
+        <div class="tab-content active" id="searchTab">
         <!-- DROPDOWN 1: Lỗi vi phạm (Cấp 1) -->
         <div class="form-group">
             <label for="loiViPham">
@@ -198,6 +607,63 @@
 
         <!-- KHU VỰC HIỂN THỊ KẾT QUẢ -->
         <div id="result"></div>
+
+        <!-- NÚT THÊM VÀO DANH SÁCH -->
+        <div class="action-buttons" id="actionButtons" style="display: none;">
+            <button class="btn btn-success" id="addToListBtn">
+                ➕ Thêm vào Danh Sách
+            </button>
+        </div>
+        </div>
+        <!-- END TAB 1 -->
+
+        <!-- TAB 2: TRA CỨU KHÁI NIỆM -->
+        <div class="tab-content" id="conceptTab">
+            <div class="search-info">
+                💡 Nhập từ khóa để tìm kiếm khái niệm giao thông (ví dụ: "xe máy", "đường bộ", "đèn đỏ", ...)
+            </div>
+            
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <input type="text" 
+                           id="conceptSearchInput" 
+                           class="search-input" 
+                           placeholder="Nhập từ khóa tìm kiếm (ví dụ: xe cơ giới, đường ưu tiên, đèn giao thông...)">
+                    <button id="conceptSearchBtn" class="search-btn">
+                        🔍 Tìm Kiếm
+                    </button>
+                </div>
+                <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
+            </div>
+
+            <div id="conceptResults" class="concept-results"></div>
+        </div>
+        <!-- END TAB 2 -->
+
+        <!-- TAB 3: DANH SÁCH VI PHẠM -->
+        <div class="tab-content" id="listTab">
+            <div id="violationListSection">
+                <div class="list-title">📋 Danh Sách Vi Phạm Đã Thêm</div>
+                <div id="violationList"></div>
+                <div id="totalSection" class="total-section" style="display: none;">
+                    <div style="font-size: 18px; margin-bottom: 10px;">🧾 Tổng số vi phạm: <strong><span id="totalCount">0</span></strong></div>
+                    <div class="total-amount">💰 Tổng mức phạt: <span id="totalAmount">0</span> đồng</div>
+                    <div style="font-size: 16px; margin-top: 15px; padding-top: 15px; border-top: 2px solid rgba(255,255,255,0.3);">
+                        <strong>⚠️ Phạt bổ sung cao nhất:</strong><br>
+                        <span id="highestPenalty" style="font-size: 15px; margin-top: 5px; display: inline-block;">Không có</span>
+                    </div>
+                </div>
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-danger" id="clearListBtn">
+                        🗑️ Xóa Toàn Bộ Danh Sách
+                    </button>
+                    <button class="btn btn-primary" id="backToSearchBtn">
+                        🔍 Quay Lại Tra Cứu
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- END TAB 3 -->
     </div>
 
     <script>
@@ -206,6 +672,97 @@
         const phuongTienSelect = document.getElementById('phuongTien');
         const chiTietLoiSelect = document.getElementById('chiTietLoi');
         const resultDiv = document.getElementById('result');
+        const actionButtons = document.getElementById('actionButtons');
+        const addToListBtn = document.getElementById('addToListBtn');
+        const showListBtn = document.getElementById('showListBtn');
+        const violationListSection = document.getElementById('violationListSection');
+        const violationList = document.getElementById('violationList');
+        const totalSection = document.getElementById('totalSection');
+        const clearListBtn = document.getElementById('clearListBtn');
+        const backToSearchBtn = document.getElementById('backToSearchBtn');
+        const listTabButton = document.getElementById('listTabButton');
+        const listCountBadge = document.getElementById('listCountBadge');
+        
+        // Concept search elements
+        const conceptSearchInput = document.getElementById('conceptSearchInput');
+        const conceptSearchBtn = document.getElementById('conceptSearchBtn');
+        const conceptResults = document.getElementById('conceptResults');
+        const autocompleteSuggestions = document.getElementById('autocompleteSuggestions');
+
+        // Biến lưu kết quả tra cứu hiện tại
+        let currentViolation = null;
+        let allConceptTerms = []; // Danh sách tất cả từ khóa cho autocomplete
+
+        // ========== TAB NAVIGATION ==========
+        
+        /**
+         * Khởi tạo tab navigation
+         */
+        function initTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(targetTab + 'Tab').classList.add('active');
+                    
+                    // Nếu chuyển sang tab danh sách, tải dữ liệu
+                    if (targetTab === 'list') {
+                        loadViolationList();
+                    }
+                });
+            });
+        }
+
+        /**
+         * Chuyển sang tab cụ thể
+         */
+        function switchToTab(tabName) {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            if (tabName === 'list') {
+                loadViolationList();
+            }
+        }
+
+        /**
+         * Cập nhật badge số lượng vi phạm
+         */
+        async function updateListBadge() {
+            try {
+                const response = await fetch('/get_violation_list');
+                const result = await response.json();
+                
+                if (result.success && result.total_count > 0) {
+                    listCountBadge.textContent = result.total_count;
+                    listCountBadge.style.display = 'inline-block';
+                } else {
+                    listCountBadge.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error updating badge:', error);
+            }
+        }
+
+        // Khởi tạo tabs khi trang load
+        initTabs();
+        updateListBadge();
+        loadConceptTerms();
 
         /**
          * Hàm gọi AJAX đến endpoint /filter_data
@@ -265,6 +822,8 @@
          * @param {Object} data - Dữ liệu kết quả từ server
          */
         function displayResult(data) {
+            currentViolation = data; // Lưu kết quả hiện tại
+            
             resultDiv.innerHTML = `
                 <div class="result-title">📋 Kết Quả Tra Cứu</div>
                 <div class="result-item">
@@ -297,6 +856,7 @@
                 </div>
             `;
             resultDiv.classList.add('show');
+            actionButtons.style.display = 'flex'; // Hiển thị nút thêm vào danh sách
         }
 
         /**
@@ -391,6 +951,339 @@
                 }
             }
         });
+        
+        /**
+         * Thêm vi phạm vào danh sách
+         */
+        addToListBtn.addEventListener('click', async function() {
+            if (!currentViolation) return;
+            
+            try {
+                const response = await fetch('/add_to_list', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(currentViolation)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Cập nhật badge
+                    updateListBadge();
+                    
+                    // Hiển thị thông báo
+                    alert(`✅ ${result.message}\nTổng số vi phạm: ${result.total_count}`);
+                    
+                    // Reset form
+                    loiViPhamSelect.value = '';
+                    resetDropdown(phuongTienSelect, '-- Chọn lỗi vi phạm trước --');
+                    resetDropdown(chiTietLoiSelect, '-- Chọn phương tiện trước --');
+                    resultDiv.classList.remove('show');
+                    actionButtons.style.display = 'none';
+                    currentViolation = null;
+                    
+                    // Chuyển sang tab danh sách
+                    switchToTab('list');
+                } else {
+                    alert(`❌ ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Lỗi kết nối đến server');
+            }
+        });
+        
+        /**
+         * Tải và hiển thị danh sách vi phạm
+         */
+        async function loadViolationList() {
+            try {
+                const response = await fetch('/get_violation_list');
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Cập nhật badge
+                    updateListBadge();
+                    
+                    if (result.violations.length === 0) {
+                        violationList.innerHTML = '<div class="empty-list">📭 Danh sách trống.<br>Hãy chuyển sang tab "Tra Cứu Vi Phạm" để thêm vi phạm vào danh sách!</div>';
+                        totalSection.style.display = 'none';
+                    } else {
+                        let html = '';
+                        result.violations.forEach((violation, index) => {
+                            html += `
+                                <div class="violation-item">
+                                    <button class="remove-btn" onclick="removeViolation(${index})">✕</button>
+                                    <div>
+                                        <span class="violation-number">${index + 1}</span>
+                                        <strong>${violation.loiViPham}</strong>
+                                    </div>
+                                    <div class="violation-detail">
+                                        <span class="violation-label">Phương tiện:</span> ${violation.phuongTien}
+                                    </div>
+                                    <div class="violation-detail">
+                                        <span class="violation-label">Chi tiết:</span> ${violation.chiTietLoi}
+                                    </div>
+                                    <div class="violation-detail">
+                                        <span class="violation-label">💰 Mức phạt:</span> <strong>${violation.mucPhat}</strong>
+                                    </div>
+                                    <div class="violation-detail">
+                                        <span class="violation-label">⚠️ Phạt bổ sung:</span> ${violation.phatBoSung}
+                                    </div>
+                                    <div class="violation-detail">
+                                        <span class="violation-label">Mã luật:</span> ${violation.id}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        violationList.innerHTML = html;
+                        
+                        // Hiển thị tổng kết
+                        document.getElementById('totalCount').textContent = result.total_count;
+                        
+                        // Hiển thị tổng mức phạt dạng khoảng
+                        const minFormatted = result.total_fine_min.toLocaleString('vi-VN');
+                        const maxFormatted = result.total_fine_max.toLocaleString('vi-VN');
+                        
+                        if (result.total_fine_min === result.total_fine_max) {
+                            document.getElementById('totalAmount').textContent = minFormatted;
+                        } else {
+                            document.getElementById('totalAmount').textContent = `${minFormatted} - ${maxFormatted}`;
+                        }
+                        
+                        // Hiển thị phạt bổ sung cao nhất
+                        document.getElementById('highestPenalty').textContent = result.highest_supplementary_penalty;
+                        
+                        totalSection.style.display = 'block';
+                    }
+                } else {
+                    alert(`❌ ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Lỗi kết nối đến server');
+            }
+        }
+        
+        /**
+         * Xóa vi phạm khỏi danh sách
+         */
+        async function removeViolation(index) {
+            if (!confirm('Bạn có chắc muốn xóa vi phạm này khỏi danh sách?')) return;
+            
+            try {
+                const response = await fetch('/remove_from_list', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ index: index })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    await loadViolationList(); // Tải lại danh sách
+                    updateListBadge(); // Cập nhật badge
+                } else {
+                    alert(`❌ ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Lỗi kết nối đến server');
+            }
+        }
+        
+        /**
+         * Xóa toàn bộ danh sách
+         */
+        clearListBtn.addEventListener('click', async function() {
+            if (!confirm('Bạn có chắc muốn xóa toàn bộ danh sách vi phạm?')) return;
+            
+            try {
+                const response = await fetch('/clear_list', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    await loadViolationList(); // Tải lại danh sách
+                    updateListBadge(); // Cập nhật badge
+                    alert('✅ Đã xóa toàn bộ danh sách');
+                } else {
+                    alert(`❌ ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Lỗi kết nối đến server');
+            }
+        });
+        
+        /**
+         * Nút quay lại tab tra cứu
+         */
+        backToSearchBtn.addEventListener('click', function() {
+            switchToTab('search');
+        });
+        
+        // ========== CONCEPT SEARCH FUNCTIONS ==========
+        
+        /**
+         * Tải danh sách từ khóa cho autocomplete
+         */
+        async function loadConceptTerms() {
+            try {
+                const response = await fetch('/get_all_concepts');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allConceptTerms = result.terms;
+                }
+            } catch (error) {
+                console.error('Error loading concept terms:', error);
+            }
+        }
+        
+        /**
+         * Hiển thị gợi ý autocomplete
+         */
+        function showSuggestions(keyword) {
+            if (!keyword) {
+                autocompleteSuggestions.classList.remove('show');
+                return;
+            }
+            
+            const filtered = allConceptTerms.filter(term => 
+                term.toLowerCase().includes(keyword.toLowerCase())
+            ).slice(0, 10); // Giới hạn 10 gợi ý
+            
+            if (filtered.length === 0) {
+                autocompleteSuggestions.classList.remove('show');
+                return;
+            }
+            
+            let html = '';
+            filtered.forEach(term => {
+                html += `<div class="suggestion-item" data-term="${term}">${term}</div>`;
+            });
+            
+            autocompleteSuggestions.innerHTML = html;
+            autocompleteSuggestions.classList.add('show');
+            
+            // Add click event to suggestions
+            document.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    conceptSearchInput.value = this.getAttribute('data-term');
+                    autocompleteSuggestions.classList.remove('show');
+                    searchConcepts();
+                });
+            });
+        }
+        
+        /**
+         * Tìm kiếm khái niệm
+         */
+        async function searchConcepts() {
+            const keyword = conceptSearchInput.value.trim();
+            
+            if (!keyword) {
+                conceptResults.innerHTML = '<div class="no-results">⚠️ Vui lòng nhập từ khóa tìm kiếm</div>';
+                return;
+            }
+            
+            // Hiển thị loading
+            conceptResults.innerHTML = '<div class="loading">⏳ Đang tìm kiếm...</div>';
+            
+            try {
+                const response = await fetch('/search_concept', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ keyword: keyword })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayConceptResults(result.results, keyword);
+                } else {
+                    conceptResults.innerHTML = `<div class="no-results">❌ ${result.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                conceptResults.innerHTML = '<div class="no-results">❌ Lỗi kết nối đến server</div>';
+            }
+        }
+        
+        /**
+         * Hiển thị kết quả tìm kiếm khái niệm
+         */
+        function displayConceptResults(results, keyword) {
+            let html = `<div class="search-info">✅ Tìm thấy <strong>${results.length}</strong> khái niệm với từ khóa "<strong>${keyword}</strong>"</div>`;
+            
+            results.forEach(concept => {
+                html += `
+                    <div class="concept-item">
+                        <div class="concept-title">
+                            📚 ${concept.thuatNgu}
+                            <span class="concept-id">${concept.id}</span>
+                        </div>
+                        <div class="concept-definition">
+                            ${concept.dinhNghia}
+                        </div>
+                        <div class="concept-legal">
+                            <strong>📖 Căn cứ pháp lý:</strong> ${concept.canCu}
+                        </div>
+                `;
+                
+                // Hiển thị từ khóa nếu có
+                if (concept.tuKhoa && concept.tuKhoa.length > 0) {
+                    html += `
+                        <div class="concept-keywords">
+                            <strong style="margin-right: 5px;">🏷️ Từ khóa:</strong>
+                    `;
+                    concept.tuKhoa.forEach(keyword => {
+                        html += `<span class="keyword-tag">${keyword}</span>`;
+                    });
+                    html += '</div>';
+                }
+                
+                html += '</div>';
+            });
+            
+            conceptResults.innerHTML = html;
+        }
+        
+        /**
+         * Event listeners cho concept search
+         */
+        conceptSearchBtn.addEventListener('click', searchConcepts);
+        
+        conceptSearchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                autocompleteSuggestions.classList.remove('show');
+                searchConcepts();
+            } else {
+                showSuggestions(this.value);
+            }
+        });
+        
+        // Ẩn suggestions khi click bên ngoài
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-box')) {
+                autocompleteSuggestions.classList.remove('show');
+            }
+        });
+        
+        // Hàm global để có thể gọi từ HTML
+        window.removeViolation = removeViolation;
     </script>
 </body>
 </html>

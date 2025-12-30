@@ -1,0 +1,144 @@
+{
+  "tuDienKhaiNiem": [
+    {
+      "id": "C01",
+      "thuatNgu": "Đường bộ",
+      "dinhNghia": "Gồm đường, cầu đường bộ, hầm đường bộ, bến phà đường bộ.",
+      "canCu": "Mục 3.1 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["đường bộ", "cầu", "hầm", "phà"]
+    },
+    {
+      "id": "C02",
+      "thuatNgu": "Phần đường xe chạy",
+      "dinhNghia": "Là phần của đường bộ được sử dụng cho phương tiện giao thông qua lại.",
+      "canCu": "Mục 3.2 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["phần đường", "xe chạy"]
+    },
+    {
+      "id": "C03",
+      "thuatNgu": "Làn đường",
+      "dinhNghia": "Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có bề rộng đủ cho xe chạy an toàn. Một phần đường xe chạy có thể có một hoặc nhiều làn đường.",
+      "canCu": "Mục 3.3 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["làn đường", "chia làn"]
+    },
+    {
+      "id": "C04",
+      "thuatNgu": "Khổ giới hạn đường bộ",
+      "dinhNghia": "Khoảng không gian có kích thước giới hạn về chiều cao, chiều rộng của đường, cầu, phà, hầm để xe đi qua an toàn.",
+      "canCu": "Mục 3.5 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["khổ giới hạn", "chiều cao", "chiều rộng"]
+    },
+    {
+      "id": "C05",
+      "thuatNgu": "Dải phân cách",
+      "dinhNghia": "Bộ phận của đường để phân chia mặt đường thành hai chiều xe chạy riêng biệt hoặc để phân chia phần đường của xe cơ giới và xe thô sơ. Dải phân cách gồm loại cố định và loại di động.",
+      "canCu": "Mục 3.10 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["dải phân cách", "phân làn", "cố định", "di động"]
+    },
+    {
+      "id": "C06",
+      "thuatNgu": "Vạch kẻ đường",
+      "dinhNghia": "Là một dạng báo hiệu để hướng dẫn, điều khiển giao thông nhằm nâng cao an toàn và khả năng thông qua của đường.",
+      "canCu": "Mục 3.13 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["vạch kẻ đường", "báo hiệu"]
+    },
+    {
+      "id": "C07",
+      "thuatNgu": "Đường ưu tiên",
+      "dinhNghia": "Là đường mà trên đó phương tiện giao thông được các phương tiện đến từ hướng khác nhường đường khi qua nơi giao nhau, được cắm biển báo hiệu đường ưu tiên.",
+      "canCu": "Mục 3.15 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["đường ưu tiên", "nhường đường"]
+    },
+    {
+      "id": "C08",
+      "thuatNgu": "Xe cơ giới",
+      "dinhNghia": "Gồm xe ô tô; máy kéo; rơ moóc; sơ mi rơ moóc; xe mô tô hai bánh; xe mô tô ba bánh; xe gắn máy (kể cả xe máy điện) và các loại xe tương tự.",
+      "canCu": "Mục 3.17 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["xe cơ giới", "ô tô", "mô tô", "xe máy điện"]
+    },
+    {
+      "id": "C09",
+      "thuatNgu": "Xe thô sơ",
+      "dinhNghia": "Gồm xe đạp (kể cả xe đạp máy, xe đạp điện), xe xích lô, xe lăn dùng cho người khuyết tật, xe súc vật kéo và các loại xe tương tự.",
+      "canCu": "Mục 3.18 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["xe thô sơ", "xe đạp", "xe xích lô"]
+    },
+    {
+      "id": "C10",
+      "thuatNgu": "Xe ô tô con (xe con)",
+      "dinhNghia": "Xe ô tô được xác định theo Giấy chứng nhận kiểm định chất lượng an toàn kỹ thuật, có số chỗ ngồi đến 9 chỗ (kể cả người lái).",
+      "canCu": "Mục 3.19 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["xe con", "ô tô con", "dưới 9 chỗ"]
+    },
+    {
+      "id": "C11",
+      "thuatNgu": "Xe mô tô (xe máy)",
+      "dinhNghia": "Xe cơ giới hai hoặc ba bánh và các loại xe tương tự, có dung tích xi lanh từ 50 cm3 trở lên hoặc động cơ điện có công suất trên 4 kW.",
+      "canCu": "Mục 3.20 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["xe mô tô", "xe máy", "trên 50cm3"]
+    },
+    {
+      "id": "C12",
+      "thuatNgu": "Xe gắn máy",
+      "dinhNghia": "Phương tiện chạy bằng động cơ, có hai hoặc ba bánh và vận tốc thiết kế lớn nhất không quá 50 km/h. Nếu là động cơ nhiệt thì dung tích không quá 50 cm3.",
+      "canCu": "Mục 3.21 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["xe gắn máy", "dưới 50cm3", "xe 50"]
+    },
+    {
+      "id": "C13",
+      "thuatNgu": "Trọng tải thiết kế",
+      "dinhNghia": "Trọng lượng hàng hóa lớn nhất mà xe đó được phép vận chuyển theo thiết kế của nhà sản xuất hoặc cơ quan thẩm quyền.",
+      "canCu": "Mục 3.22 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["trọng tải", "thiết kế", "tải trọng"]
+    },
+    {
+      "id": "C14",
+      "thuatNgu": "Trọng lượng toàn bộ (Trọng diện xe)",
+      "dinhNghia": "Là trọng lượng bản thân xe cộng với trọng lượng của người, hành lý và hàng hóa xếp trên xe (nếu có).",
+      "canCu": "Mục 3.24 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["trọng lượng toàn bộ", "tổng trọng tải"]
+    },
+    {
+      "id": "C15",
+      "thuatNgu": "Nơi giao nhau",
+      "dinhNghia": "Là nơi hai hay nhiều đường bộ gặp nhau trên cùng một mặt phẳng, bao gồm cả quảng trường nơi các đường giao nhau.",
+      "canCu": "Mục 3.31 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["ngã tư", "ngã ba", "giao nhau"]
+    },
+    {
+      "id": "C16",
+      "thuatNgu": "Đường cao tốc",
+      "dinhNghia": "Đường dành riêng cho xe cơ giới, có dải phân cách chia đường cho xe chạy hai chiều riêng biệt; không giao nhau cùng mức với các đường khác.",
+      "canCu": "Mục 3.32 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["cao tốc", "đường nhanh"]
+    },
+    {
+      "id": "C17",
+      "thuatNgu": "Đường qua khu đông dân cư",
+      "dinhNghia": "Đoạn đường bộ nằm trong khu vực nội thành phố, nội thị xã, nội thị trấn và những đoạn đường có đông dân cư sinh sống sát dọc theo đường.",
+      "canCu": "Mục 3.34 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["khu dân cư", "nội thành", "đông dân"]
+    },
+    {
+      "id": "C18",
+      "thuatNgu": "Tín hiệu đèn xanh",
+      "dinhNghia": "Báo hiệu cho phép phương tiện giao thông được đi.",
+      "canCu": "Mục 10.3.1 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["đèn xanh", "được đi"]
+    },
+    {
+      "id": "C19",
+      "thuatNgu": "Tín hiệu đèn đỏ",
+      "dinhNghia": "Báo hiệu cấm đi. Phương tiện phải dừng lại trước vạch dừng.",
+      "canCu": "Mục 10.3.2 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["đèn đỏ", "cấm đi", "dừng lại"]
+    },
+    {
+      "id": "C20",
+      "thuatNgu": "Tín hiệu đèn vàng",
+      "dinhNghia": "Báo hiệu sự thay đổi tín hiệu. Người điều khiển phải dừng lại trước vạch dừng trừ trường hợp đã đi quá vạch dừng.",
+      "canCu": "Mục 10.3.3 QCVN 41:2024/BGTVT",
+      "tuKhoa": ["đèn vàng", "chuẩn bị dừng"]
+    }
+  ]
+}
