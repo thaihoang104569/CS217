@@ -227,8 +227,13 @@ def get_violation_list():
         total_min = 0
         total_max = 0
         
-        # Danh sách để xác định phạt bổ sung cao nhất
+        # Thu thập phạt bổ sung để tổng hợp
         supplementary_penalties = []
+
+        # Tổng hợp điểm trừ + tước quyền sử dụng GPLX (nếu có)
+        total_deducted_points = 0
+        highest_revocation_penalty = None
+        highest_revocation_months = 0
         
         for violation in violation_list:
             muc_phat = violation.get('mucPhat', '0')
@@ -249,6 +254,31 @@ def get_violation_list():
             phat_bo_sung = violation.get('phatBoSung', '')
             if phat_bo_sung and phat_bo_sung != 'Không có':
                 supplementary_penalties.append(phat_bo_sung)
+
+                phat_bo_sung_lower = phat_bo_sung.lower()
+
+                # Cộng tổng điểm trừ (nếu có)
+                deducted_points_matches = re.findall(r'trừ\s*(\d+)\s*điểm', phat_bo_sung_lower)
+                if deducted_points_matches:
+                    total_deducted_points += sum(int(p) for p in deducted_points_matches)
+
+                # Lấy mức tước quyền sử dụng GPLX cao nhất (nếu có)
+                if 'tước' in phat_bo_sung_lower and ('gplx' in phat_bo_sung_lower or 'giấy phép' in phat_bo_sung_lower):
+                    # Ưu tiên dạng khoảng "từ A – B tháng"
+                    months_range = re.findall(r'(\d+)\s*[\u2013\-]\s*(\d+)\s*tháng', phat_bo_sung)
+                    if months_range:
+                        max_months = max(int(b) for (_, b) in months_range)
+                        if max_months > highest_revocation_months:
+                            highest_revocation_months = max_months
+                            highest_revocation_penalty = phat_bo_sung
+                    else:
+                        # Dạng 1 số "X tháng"
+                        months_single = re.findall(r'(\d+)\s*tháng', phat_bo_sung)
+                        if months_single:
+                            max_months = max(int(m) for m in months_single)
+                            if max_months > highest_revocation_months:
+                                highest_revocation_months = max_months
+                                highest_revocation_penalty = phat_bo_sung
         
         # Xác định phạt bổ sung cao nhất
         highest_penalty = determine_highest_penalty(supplementary_penalties)
@@ -259,7 +289,11 @@ def get_violation_list():
             'total_count': len(violation_list),
             'total_fine_min': total_min,
             'total_fine_max': total_max,
-            'highest_supplementary_penalty': highest_penalty
+            # Backward compatible (đang dùng ở UI cũ)
+            'highest_supplementary_penalty': highest_penalty,
+            # UI tổng hợp mới
+            'total_deducted_points': total_deducted_points,
+            'revocation_penalty': highest_revocation_penalty or 'Không có'
         })
     except Exception as e:
         return jsonify({

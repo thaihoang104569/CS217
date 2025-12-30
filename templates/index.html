@@ -649,8 +649,8 @@
                     <div style="font-size: 18px; margin-bottom: 10px;">🧾 Tổng số vi phạm: <strong><span id="totalCount">0</span></strong></div>
                     <div class="total-amount">💰 Tổng mức phạt: <span id="totalAmount">0</span> đồng</div>
                     <div style="font-size: 16px; margin-top: 15px; padding-top: 15px; border-top: 2px solid rgba(255,255,255,0.3);">
-                        <strong>⚠️ Phạt bổ sung cao nhất:</strong><br>
-                        <span id="highestPenalty" style="font-size: 15px; margin-top: 5px; display: inline-block;">Không có</span>
+                        <strong>⚠️ Phạt bổ sung:</strong><br>
+                        <span id="supplementarySummary" style="font-size: 15px; margin-top: 5px; display: inline-block;">Không có</span>
                     </div>
                 </div>
                 <div class="action-buttons" style="margin-top: 20px;">
@@ -1053,8 +1053,19 @@
                             document.getElementById('totalAmount').textContent = `${minFormatted} - ${maxFormatted}`;
                         }
                         
-                        // Hiển thị phạt bổ sung cao nhất
-                        document.getElementById('highestPenalty').textContent = result.highest_supplementary_penalty;
+                        // Hiển thị tổng hợp phạt bổ sung: cộng điểm trừ + kèm tước bằng (nếu có)
+                        const points = Number(result.total_deducted_points || 0);
+                        const revocation = result.revocation_penalty;
+                        let summaryHtml = '';
+                        if (points > 0) {
+                            summaryHtml += `Trừ tổng: <strong>${points}</strong> điểm GPLX`;
+                        } else {
+                            summaryHtml += 'Trừ điểm: Không có';
+                        }
+                        if (revocation && revocation !== 'Không có') {
+                            summaryHtml += `<br>Tước bằng: ${revocation}`;
+                        }
+                        document.getElementById('supplementarySummary').innerHTML = summaryHtml;
                         
                         totalSection.style.display = 'block';
                     }
