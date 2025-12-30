@@ -533,13 +533,4 @@ python app.py
 # Truy cập
 http://127.0.0.1:5000
 ```
-
-## 👨‍💻 Tác giả
-
-**Đồ án môn học**: Hệ Cơ Sở Tri Thức (CS217)  
-**Năm học**: 2024-2025  
-**Mô hình**: Forward Chaining + Knowledge Base System  
-
----
-
 **© 2025 - Hệ Tra Cứu Luật Giao Thông Việt Nam**
